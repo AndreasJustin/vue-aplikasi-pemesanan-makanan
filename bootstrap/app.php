@@ -1,13 +1,15 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use App\Http\Middleware\AbleCreateUser;
+use App\Http\Middleware\AbleCreateOrder;
+use App\Http\Middleware\AbleFinishOrder;
 use App\Http\Middleware\HandleAppearance;
+use App\Http\Middleware\AbleCreateUpdateItem;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
-use App\Http\Middleware\AbleCreateOrder;
-use App\Http\Middleware\AbleFinishOrder;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'ableCreateOrder' => AbleCreateOrder::class,
             'ableFinishOrder' => AbleFinishOrder::class,
+            'ableCreateUser' => AbleCreateUser::class,
+            'ableCreateUpdateItem' => AbleCreateUpdateItem::class,
         ]);
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 

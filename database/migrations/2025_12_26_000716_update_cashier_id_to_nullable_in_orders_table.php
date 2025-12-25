@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->decimal('price')->unsigned();
-            $table->string('image', 255)->nullable();
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::table('orders', function (Blueprint $table) {
+            $table->unsignedBigInteger('cashier_id')->nullable()->change();
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items');
+        Schema::table('orders', function (Blueprint $table) {
+            $table->unsignedBigInteger('cashier_id')->nullable(false)->change();
+        });
     }
 };

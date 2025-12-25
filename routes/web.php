@@ -1,13 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\Order;
 use Laravel\Fortify\Features;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
+    $order = Order::find(4);
+    return $order->sumOrderPrice();
 })->name('home');
 
 Route::get('dashboard', function () {

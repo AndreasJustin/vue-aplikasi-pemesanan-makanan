@@ -21,7 +21,18 @@ class AuthController extends Controller
         throw ValidationException::withMessages([
             'email' => ['The provided credentials are incorrect.'],
         ]);
+    }   
+        unset($user->email_verified_at);
+        unset($user->created_at);
+        unset($user->updated_at);
+        unset($user->deleted_at);
+        $user->tokens()->delete();
+        $token = $user->createToken('auth_token')->plainTextToken;
+        $user->token = $token;
+        return response(['data' => $user]);
     }
-        return $user->createToken('auth_token')->plainTextToken;
-    }
+public function me(Request $request)
+{
+    return response(['data' => $request->user()]);
+}
 }

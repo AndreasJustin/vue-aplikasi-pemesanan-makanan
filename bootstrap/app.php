@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AblePayOrder;
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\AbleCreateUser;
 use App\Http\Middleware\AbleCreateOrder;
@@ -22,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'ableCreateOrder' => AbleCreateOrder::class,
             'ableFinishOrder' => AbleFinishOrder::class,
+            'ablePayOrder' => AblePayOrder::class,
             'ableCreateUser' => AbleCreateUser::class,
             'ableCreateUpdateItem' => AbleCreateUpdateItem::class,
         ]);

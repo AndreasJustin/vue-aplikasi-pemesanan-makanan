@@ -22,7 +22,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        return $order->loadMissing('orderDetail:order_id,price,item_id', 'orderDetail.item:id,name,price', 'waitress:id,name', 'cashier:id,name');
+        return response(['data' => $order->loadMissing('orderDetail:order_id,price,item_id', 'orderDetail.item:id,name,price', 'waitress:id,name', 'cashier:id,name')]);
     }
 
     public function store(Request $request)
@@ -61,5 +61,34 @@ class OrderController extends Controller
             return response($th);
         }
         return response(['data' => $order], 201);
+    }
+    public function setAsDone($id)
+    {
+        $order = Order::findOrFail($id);
+        if ($order->status == 'done') {
+            return response(['message' => 'Order is already done'], 400);
+        }
+        if ($order->status != 'ordered') {
+            return response(['message' => 'Order can only be set as done if it is currently ordered'], 400);
+        }
+        $order->status = 'done';
+        $order->cashier_id = Auth::user()->id;
+        $order->save();
+
+        return response(['data' => $order], 200);
+    }
+    public function setAsPaid($id)
+    {
+        $order = Order::findOrFail($id);
+        if ($order->status == 'paid') {
+            return response(['message' => 'Order is already paid'], 400);
+        }
+        if ($order->status != 'done') {
+            return response(['message' => 'Order can only be set as paid if it is currently done'], 400);
+        }
+        $order->status = 'paid';
+        $order->save();
+
+        return response(['data' => $order], 200);
     }
 }

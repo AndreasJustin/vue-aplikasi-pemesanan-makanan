@@ -6,8 +6,6 @@ use Laravel\Fortify\Features;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $order = Order::find(4);
-    return $order->sumOrderPrice();
 })->name('home');
 
 Route::get('dashboard', function () {
